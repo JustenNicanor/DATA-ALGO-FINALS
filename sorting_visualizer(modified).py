@@ -61,6 +61,46 @@ def _selection_sort():
         swap(barList[min] , barList[i])        
         yield
 
+#Merge Sort
+def mergeSort():
+    global barList    
+    global lengthList
+
+    if len(lengthList) > 1:
+            
+        mid = len(lengthList)//2
+        sub_array1 = lengthList[:mid]
+        sub_array2 = lengthList[mid:]
+ 
+        mergeSort(sub_array1)
+        mergeSort(sub_array2)
+            
+        i = j = k = 0
+      
+        while i < len(sub_array1) and j < len(sub_array2):
+            if sub_array1[i] < sub_array2[j]:
+                lengthList[k] = sub_array1[i]
+                barList[k] = sub_array1[i]
+                i += 1
+            else:
+                lengthList[k] = sub_array2[j]
+                barList[k] = sub_array2[j]
+                j += 1
+            k += 1
+ 
+        while i < len(sub_array1):
+            lengthList[k] = sub_array1[i]
+            barList[k] = sub_array1[i]
+            i += 1
+            k += 1
+ 
+        while j < len(sub_array2):
+            lengthList[k] = sub_array2[j]
+            barList[k] = sub_array2[j]
+            j += 1
+            k += 1   
+    
+    swap(barList[min] , barList[i]) 
 
 #Triggering Fuctions
 
