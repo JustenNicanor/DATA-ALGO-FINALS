@@ -62,8 +62,8 @@ def _selection_sort():
         yield
 
 #Merge Sort
-def mergeSort():
-    global barList    
+def _merge_sort():  
+    global barList  
     global lengthList
 
     if len(lengthList) > 1:
@@ -71,9 +71,8 @@ def mergeSort():
         mid = len(lengthList)//2
         sub_array1 = lengthList[:mid]
         sub_array2 = lengthList[mid:]
- 
-        mergeSort(sub_array1)
-        mergeSort(sub_array2)
+        sub_array1bar = barList[:mid]
+        sub_array2bar = barList[mid:]
             
         i = j = k = 0
       
@@ -87,20 +86,30 @@ def mergeSort():
                 barList[k] = sub_array2[j]
                 j += 1
             k += 1
- 
+        swap(barList[k])
+        yield
+
         while i < len(sub_array1):
             lengthList[k] = sub_array1[i]
             barList[k] = sub_array1[i]
             i += 1
             k += 1
- 
+        swap(barList[k])
+        yield
+
         while j < len(sub_array2):
             lengthList[k] = sub_array2[j]
             barList[k] = sub_array2[j]
             j += 1
             k += 1   
-    
-    swap(barList[min] , barList[i]) 
+        swap(barList[k])
+        yield
+
+    lengthList[:mid] = sub_array1 
+    lengthList[mid:] = sub_array2
+    barList[:mid] = sub_array1bar 
+    barList[mid:]= sub_array2bar 
+    swap(barList[:mid], sub_array1bar, barList[mid:], sub_array2bar)
 
 #Triggering Fuctions
 
@@ -117,7 +126,12 @@ def selection_sort():
 def bubble_sort():     
     global worker
     worker = _bubble_sort()
-    animate()    
+    animate() 
+
+def merge_sort():     
+    global worker
+    worker = _merge_sort()
+    animate()   
 
 
 
@@ -181,7 +195,9 @@ canvas.grid(column=0,row=0, columnspan = 50)
 insert = tk.Button(window, text='Insertion Sort', command=insertion_sort, width=10, height=1)
 select = tk.Button(window, text='Selection Sort', command=selection_sort, width=10, height=1)
 bubble = tk.Button(window, text='Bubble Sort', command=bubble_sort, width=10, height=1)
+merge = tk.Button(window, text='Merge Sort', command=merge_sort, width=10, height=1)
 shuf = tk.Button(window, text='Shuffle', command=generate, bg = "red", fg = "white", width=10, height=1)
+merge.grid(column=4,row=1)
 insert.grid(column=3,row=1)
 select.grid(column=2,row=1)
 bubble.grid(column=1,row=1)
