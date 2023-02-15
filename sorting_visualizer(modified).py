@@ -8,9 +8,51 @@ root.maxsize(980, 680)
 root.config(bg='black')
 
 selected_alg = StringVar()
- 
+
+def drawData(data):
+    canvas.delete("all")
+    c_height = 380
+    c_width = 600
+    x_width = c_width / (len(data) + 1)
+    offset = 30
+    spacing = 10
+    normalizeData = [i / max(data) for i in data]
+    for i, height in enumerate(normalizeData):
+        x0 = i * x_width + offset + spacing
+        y0 = c_height - height * 340
+
+        x1 = (i + 1) * x_width + offset
+        y1 = c_height
+
+        canvas.create_rectangle(x0, y0, x1, y1, fill="red")
+        canvas.create_text(x0 + 2, y0, anchor=SW, text=str(data[i]))
+
+
+
 def Generate():
     print('Alg Selected: ' + selected_alg.get())
+    try:
+        minVal = int(minEntry.get())
+    except:   
+        minVal = 1
+    try:
+        maxVal = int(maxEntry.get())
+    except:
+        maxVal = 10
+    size = int(10)
+
+    if minVal < 0 : minVal = 0 
+    if maxVal > 100: maxVal = 100
+    if minVal > maxVal : minVal, maxVal = maxVal, minVal
+
+
+    data = []
+    for _ in range(size):
+        data.append(random.randrange(minVal, maxVal + 1))
+    drawData(data)
+   
+
+
 
 UI_frame = Frame(root, width= 600, height=200, bg='grey')
 UI_frame.grid(row = 0, column = 0, padx = 10, pady = 5)
