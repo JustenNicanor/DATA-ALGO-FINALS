@@ -1,207 +1,35 @@
-import tkinter as tk
+from tkinter import *
+from tkinter import ttk
 import random
 
-#Function to swap two bars that will be animated
-def swap(pos_0, pos_1):
-    bar11, _, bar12, _ = canvas.coords(pos_0)
-    bar21, _, bar22, _ = canvas.coords(pos_1)
-    canvas.move(pos_0, bar21-bar11, 0)
-    canvas.move(pos_1, bar12-bar22, 0)
+root = Tk()
+root.title('SORTING ALGORITHM VISUALIZATION')
+root.maxsize(980, 680)
+root.config(bg='black')
 
-worker = None 
+selected_alg = StringVar()
+ 
+def Generate():
+    print('Alg Selected: ' + selected_alg.get())
 
-#Insertion Sort
-def _insertion_sort():
-    global barList
-    global lengthList
+UI_frame = Frame(root, width= 600, height=200, bg='grey')
+UI_frame.grid(row = 0, column = 0, padx = 10, pady = 5)
 
-    for i in range(len(lengthList)):
-        cursor = lengthList[i]
-        cursorBar = barList[i]
-        pos = i
+canvas = Canvas(root, width=600, height = 380, bg='white')
+canvas.grid(row=1, column = 0, padx = 10, pady = 5)
 
-        while pos > 0 and lengthList[pos - 1] > cursor:
-            lengthList[pos] = lengthList[pos - 1]
-            barList[pos], barList[pos - 1] = barList[pos - 1], barList[pos]
-            swap(barList[pos],barList[pos-1])   
-            yield                                      
-            pos -= 1                                   
+Label (UI_frame, text="Algorithm: ", bg='grey').grid(row=0, column=0, padx=5, pady=5, sticky=W)
+algMenu = ttk.Combobox(UI_frame, textvariable= selected_alg, values=['Bubble Sort', 'Merge Sort'])
+algMenu.grid(row=0, column=1, padx= 5, pady=5)
+algMenu.current(0)
+Button(UI_frame, text="Generate", command=Generate, bg='red').grid(row=0, column=7, padx=5, pady=5)
 
-        lengthList[pos] = cursor
-        barList[pos] = cursorBar
-        swap(barList[pos],cursorBar)
+Label (UI_frame, text="Min Value: ", bg='grey').grid(row=0, column=3, padx=5, pady=5, sticky=W)
+minEntry = Entry(UI_frame)
+minEntry.grid(row=0, column = 4, padx=5, pady=5, sticky=W)
 
+Label (UI_frame, text="Max Value: ", bg='grey').grid(row=0, column=5, padx=5, pady=5, sticky=W)
+maxEntry = Entry(UI_frame)
+maxEntry.grid(row=0, column = 6 , padx=5, pady=5, sticky=W)
 
-#Bubble Sort
-def _bubble_sort():
-    global barList
-    global lengthList
-    
-    for i in range(len(lengthList) - 1):
-        for j in range(len(lengthList) - i - 1):
-            if(lengthList[j] > lengthList[j + 1]):
-                lengthList[j] , lengthList[j + 1] = lengthList[j + 1] , lengthList[j]
-                barList[j], barList[j + 1] = barList[j + 1] , barList[j]
-                swap(barList[j + 1] , barList[j])
-                yield        
-           
-
-#Selection Sort            
-def _selection_sort():
-    global barList    
-    global lengthList
-
-    for i in range(len(lengthList)):
-        min = i
-        for j in range(i + 1 ,len(lengthList)):
-            if(lengthList[j] < lengthList[min]):
-                min = j
-        lengthList[min], lengthList[i] = lengthList[i] ,lengthList[min]
-        barList[min] , barList[i] = barList[i] , barList[min]
-        swap(barList[min] , barList[i])        
-        yield
-
-#Merge Sort
-def _merge_sort():  
-    global barList  
-    global lengthList
-
-    if len(lengthList) > 1:
-            
-        mid = len(lengthList)//2
-        sub_array1 = lengthList[:mid]
-        sub_array2 = lengthList[mid:]
-        sub_array1bar = barList[:mid]
-        sub_array2bar = barList[mid:]
-            
-        i = j = k = 0
-      
-        while i < len(sub_array1) and j < len(sub_array2):
-            if sub_array1[i] < sub_array2[j]:
-                lengthList[k] = sub_array1[i]
-                barList[k] = sub_array1[i]
-                i += 1
-            else:
-                lengthList[k] = sub_array2[j]
-                barList[k] = sub_array2[j]
-                j += 1
-            k += 1
-        swap(barList[k])
-        yield
-
-        while i < len(sub_array1):
-            lengthList[k] = sub_array1[i]
-            barList[k] = sub_array1[i]
-            i += 1
-            k += 1
-        swap(barList[k])
-        yield
-
-        while j < len(sub_array2):
-            lengthList[k] = sub_array2[j]
-            barList[k] = sub_array2[j]
-            j += 1
-            k += 1   
-        swap(barList[k])
-        yield
-
-    lengthList[:mid] = sub_array1 
-    lengthList[mid:] = sub_array2
-    barList[:mid] = sub_array1bar 
-    barList[mid:]= sub_array2bar 
-    swap(barList[:mid], sub_array1bar, barList[mid:], sub_array2bar)
-
-#Triggering Fuctions
-
-def insertion_sort():     
-    global worker
-    worker = _insertion_sort()
-    animate()
-
-def selection_sort():     
-    global worker
-    worker = _selection_sort()
-    animate()
-
-def bubble_sort():     
-    global worker
-    worker = _bubble_sort()
-    animate() 
-
-def merge_sort():     
-    global worker
-    worker = _merge_sort()
-    animate()   
-
-
-
-#Animation Function
-def animate():      
-    global worker
-    if worker is not None:
-        try:
-            next(worker)
-            window.after(10, animate)    
-        except StopIteration:            
-            worker = None
-        finally:
-            window.after_cancel(animate) 
-
-
-#Generator function for generating data
-def generate():
-    global barList
-    global lengthList
-    canvas.delete('all')
-    barstart = 5
-    barend = 15
-    barList = []
-    lengthList = []
-
-    #Creating a rectangle
-    for bar in range(1, 60):
-        randomY = random.randint(1, 360)
-        bar = canvas.create_rectangle(barstart, randomY, barend, 365, fill='orange')
-        barList.append(bar)
-        barstart += 10
-        barend += 10
-
-    #Getting length of the bar and appending into length list
-    for bar in barList:
-        bar = canvas.coords(bar)
-        length = bar[3] - bar[1]
-        lengthList.append(length)
-
-    #Maximum is colored Red
-    #Minimum is colored Black
-    for i in range(len(lengthList)-1):
-        if lengthList[i] == min(lengthList):
-            canvas.itemconfig(barList[i], fill='red')
-        elif lengthList[i] == max(lengthList):
-            canvas.itemconfig(barList[i], fill='black')
-
-
-
-#Making a window using the Tk widget
-window = tk.Tk()
-window.title('Sorting Visualizer')
-window.geometry('600x450')
-
-#Making a Canvas within the window to display contents
-canvas = tk.Canvas(window, width='600', height='400')
-canvas.grid(column=0,row=0, columnspan = 50)
-
-#Buttons
-insert = tk.Button(window, text='Insertion Sort', command=insertion_sort, width=10, height=1)
-select = tk.Button(window, text='Selection Sort', command=selection_sort, width=10, height=1)
-bubble = tk.Button(window, text='Bubble Sort', command=bubble_sort, width=10, height=1)
-merge = tk.Button(window, text='Merge Sort', command=merge_sort, width=10, height=1)
-shuf = tk.Button(window, text='Shuffle', command=generate, bg = "red", fg = "white", width=10, height=1)
-merge.grid(column=4,row=1)
-insert.grid(column=3,row=1)
-select.grid(column=2,row=1)
-bubble.grid(column=1,row=1)
-shuf.grid(column=0, row=1)
-
-generate()
-window.mainloop()
+root.mainloop()
