@@ -90,11 +90,11 @@ algMenu.current(0)
 Button(UI_frame, text="START", command=StartAlgorithm, bg='light green').grid(row=0, column=8, padx=10, pady=5)
 
 
-minEntry = Scale(UI_frame, from_=1, to=25, resolution=1, orient=HORIZONTAL, label="LOWEST NUM", bg='red')
+minEntry = Scale(UI_frame, from_=1, to=100, resolution=1, orient=HORIZONTAL, label="LOWEST NUM", bg='red')
 minEntry.grid(row=0, column = 4, padx=10, pady=5)
 
-maxEntry = Scale(UI_frame, from_=10, to=100, resolution=1, orient=HORIZONTAL, label="HIGHEST NUM", bg = 'orange')
+maxEntry = Scale(UI_frame, from_=1, to=100, resolution=1, orient=HORIZONTAL, label="HIGHEST NUM", bg = 'orange')
 maxEntry.grid(row=0, column = 6 , padx=10, pady=5)
 
-Button(UI_frame, text="Generate", command=Generate, bg='light blue').grid(row=0, column=7, padx=10, pady=5)
+Button(UI_frame, text="Shuffle", command=Generate, bg='light blue').grid(row=0, column=7, padx=10, pady=5)
 root.mainloop()
