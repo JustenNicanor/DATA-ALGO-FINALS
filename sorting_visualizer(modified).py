@@ -3,6 +3,7 @@ from tkinter import ttk
 import random
 from bubbleSort import bubble_sort
 from quicksort import quick_sort
+from mergesort import merge_sort
 
 
 root = Tk()
@@ -58,6 +59,10 @@ def StartAlgorithm():
 
     elif  algMenu.get() == 'Bubble Sort':
         bubble_sort(data, drawData)
+
+    elif algMenu.get() == 'Merge Sort':
+        merge_sort(data, drawData)
+        drawData(data, ['green' for x in range(len(data))])
 
 
     
