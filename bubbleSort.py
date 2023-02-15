@@ -8,7 +8,7 @@ def bubble_sort(data, drawData):
                 data[j] = data[j + 1]
                 data[j + 1] = temp
                 drawData(data, ['green' if x == j + 1 else 'yellow' for x in range(len(data))])
-                time.sleep(0.2)
+                time.sleep(0.5)
     drawData(data,  ['green' for x in range(len(data))])
     
 
