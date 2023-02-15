@@ -8,6 +8,7 @@ root.maxsize(980, 680)
 root.config(bg='white')
 
 selected_alg = StringVar()
+data = []
 
 def drawData(data):
     canvas.delete("all")
@@ -30,28 +31,19 @@ def drawData(data):
 
 
 def Generate():
-    print('Alg Selected: ' + selected_alg.get())
-    try:
-        minVal = int(minEntry.get())
-    except:   
-        minVal = 1
-    try:
-        maxVal = int(maxEntry.get())
-    except:
-        maxVal = 10
+    global data
+
+    minVal = int(minEntry.get())
+    maxVal = int(maxEntry.get())
     size = int(20)
-
-    if minVal < 0 : minVal = 0 
-    if maxVal > 100: maxVal = 100
-    if minVal > maxVal : minVal, maxVal = maxVal, minVal
-
 
     data = []
     for _ in range(size):
         data.append(random.randrange(minVal, maxVal + 1))
     drawData(data)
    
-
+def StartAlgorithm():
+    global data
 
 
 UI_frame = Frame(root, width= 700, height=200, bg='light grey')
