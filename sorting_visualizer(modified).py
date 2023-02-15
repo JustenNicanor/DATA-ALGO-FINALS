@@ -1,6 +1,8 @@
 from tkinter import *
 from tkinter import ttk
 import random
+from bubbleSort import bubble_sort
+
 
 root = Tk()
 root.title('SORTING ALGORITHM VISUALIZATION')
@@ -10,7 +12,7 @@ root.config(bg='white')
 selected_alg = StringVar()
 data = []
 
-def drawData(data):
+def drawData(data, colorArray):
     canvas.delete("all")
     c_height = 380
     c_width = 600
@@ -25,8 +27,10 @@ def drawData(data):
         x1 = (i + 1) * x_width + offset
         y1 = c_height
 
-        canvas.create_rectangle(x0, y0, x1, y1, fill="yellow")
+        canvas.create_rectangle(x0, y0, x1, y1, fill=colorArray[i])
         canvas.create_text(x0 + 2, y0, anchor=SW, text=str(data[i]))
+    
+    root.update_idletasks()
 
 
 
@@ -40,10 +44,12 @@ def Generate():
     data = []
     for _ in range(size):
         data.append(random.randrange(minVal, maxVal + 1))
-    drawData(data)
+
+    drawData(data, ['yellow' for x in range(len(data))])
    
 def StartAlgorithm():
     global data
+    bubble_sort(data, drawData)
 
 
 UI_frame = Frame(root, width= 700, height=200, bg='light grey')
@@ -56,7 +62,8 @@ Label (UI_frame, text="ALGORITHM:", bg='light grey').grid(row=0, column=0, padx=
 algMenu = ttk.Combobox(UI_frame, textvariable= selected_alg, values=['Bubble Sort', 'Merge Sort'])
 algMenu.grid(row=0, column=1, padx= 0, pady=5)
 algMenu.current(0)
-Button(UI_frame, text="Generate", command=Generate, bg='light green').grid(row=0, column=7, padx=10, pady=5)
+Button(UI_frame, text="START", command=StartAlgorithm, bg='light green').grid(row=0, column=8, padx=10, pady=5)
+
 
 minEntry = Scale(UI_frame, from_=1, to=25, resolution=1, orient=HORIZONTAL, label="LOWEST NUM", bg='red')
 minEntry.grid(row=0, column = 4, padx=10, pady=5)
@@ -64,4 +71,5 @@ minEntry.grid(row=0, column = 4, padx=10, pady=5)
 maxEntry = Scale(UI_frame, from_=10, to=100, resolution=1, orient=HORIZONTAL, label="HIGHEST NUM", bg = 'orange')
 maxEntry.grid(row=0, column = 6 , padx=10, pady=5)
 
+Button(UI_frame, text="Generate", command=Generate, bg='light blue').grid(row=0, column=7, padx=10, pady=5)
 root.mainloop()
