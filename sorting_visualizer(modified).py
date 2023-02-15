@@ -5,7 +5,7 @@ import random
 root = Tk()
 root.title('SORTING ALGORITHM VISUALIZATION')
 root.maxsize(980, 680)
-root.config(bg='black')
+root.config(bg='white')
 
 selected_alg = StringVar()
 
@@ -24,7 +24,7 @@ def drawData(data):
         x1 = (i + 1) * x_width + offset
         y1 = c_height
 
-        canvas.create_rectangle(x0, y0, x1, y1, fill="red")
+        canvas.create_rectangle(x0, y0, x1, y1, fill="yellow")
         canvas.create_text(x0 + 2, y0, anchor=SW, text=str(data[i]))
 
 
@@ -39,7 +39,7 @@ def Generate():
         maxVal = int(maxEntry.get())
     except:
         maxVal = 10
-    size = int(10)
+    size = int(20)
 
     if minVal < 0 : minVal = 0 
     if maxVal > 100: maxVal = 100
@@ -54,24 +54,22 @@ def Generate():
 
 
 
-UI_frame = Frame(root, width= 600, height=200, bg='grey')
-UI_frame.grid(row = 0, column = 0, padx = 10, pady = 5)
+UI_frame = Frame(root, width= 700, height=200, bg='light grey')
+UI_frame.grid(row = 0, column = 0, padx = 10, pady = 10)
 
 canvas = Canvas(root, width=600, height = 380, bg='white')
-canvas.grid(row=1, column = 0, padx = 10, pady = 5)
+canvas.grid(row=1, column = 0, padx = 10, pady = 10)
 
-Label (UI_frame, text="Algorithm: ", bg='grey').grid(row=0, column=0, padx=5, pady=5, sticky=W)
+Label (UI_frame, text="ALGORITHM:", bg='light grey').grid(row=0, column=0, padx=5, pady=5, sticky=W)
 algMenu = ttk.Combobox(UI_frame, textvariable= selected_alg, values=['Bubble Sort', 'Merge Sort'])
-algMenu.grid(row=0, column=1, padx= 5, pady=5)
+algMenu.grid(row=0, column=1, padx= 0, pady=5)
 algMenu.current(0)
-Button(UI_frame, text="Generate", command=Generate, bg='red').grid(row=0, column=7, padx=5, pady=5)
+Button(UI_frame, text="Generate", command=Generate, bg='light green').grid(row=0, column=7, padx=10, pady=5)
 
-Label (UI_frame, text="Min Value: ", bg='grey').grid(row=0, column=3, padx=5, pady=5, sticky=W)
-minEntry = Entry(UI_frame)
-minEntry.grid(row=0, column = 4, padx=5, pady=5, sticky=W)
+minEntry = Scale(UI_frame, from_=1, to=25, resolution=1, orient=HORIZONTAL, label="LOWEST NUM", bg='red')
+minEntry.grid(row=0, column = 4, padx=10, pady=5)
 
-Label (UI_frame, text="Max Value: ", bg='grey').grid(row=0, column=5, padx=5, pady=5, sticky=W)
-maxEntry = Entry(UI_frame)
-maxEntry.grid(row=0, column = 6 , padx=5, pady=5, sticky=W)
+maxEntry = Scale(UI_frame, from_=10, to=100, resolution=1, orient=HORIZONTAL, label="HIGHEST NUM", bg = 'orange')
+maxEntry.grid(row=0, column = 6 , padx=10, pady=5)
 
 root.mainloop()
